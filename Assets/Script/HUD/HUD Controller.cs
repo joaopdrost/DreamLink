@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
 {
-
+    [Header("Stamina e Life Bar")]
     [SerializeField] private Image lifeUIBar;
     [SerializeField] private Image noLifeUIBar;
     [SerializeField] private Image staminaUIBar;
 
+    [Header("Tools")]
+    [SerializeField] private Image[] itemSlots; // Array de slots de itens no HUD
+    [SerializeField] private Color selectedColor = Color.red; // Cor para o item selecionado
+    [SerializeField] private Color defaultColor = Color.white; // Cor padrão dos itens
+
+    private int currentSelectedItem = -1;
 
     private PlayerItems playerItems;
 
@@ -58,7 +64,24 @@ public class HUDController : MonoBehaviour
         playerItems.IsRunning = isRunning;
     }
 
-    private void Awake()
+    // referente a seleçao de intens do Hud tools
+    public void SelectItem(int itemIndex)
+    {
+        if (itemIndex >= 0 && itemIndex < itemSlots.Length)
+        {
+            // Desseleciona o item anterior
+            if (currentSelectedItem != -1 && currentSelectedItem < itemSlots.Length)
+            {
+                itemSlots[currentSelectedItem].color = defaultColor;
+            }
+
+            // Seleciona o novo item
+            currentSelectedItem = itemIndex;
+            itemSlots[currentSelectedItem].color = selectedColor;
+        }
+    }
+
+        private void Awake()
     {
         playerItems = FindObjectOfType<PlayerItems>();
     }

@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField]private float runSpeed;
     private Rigidbody2D rig;
 
-    
+    [Header("Moviments")]
     private float initialSpeed;
     private bool _IsRolling;
     private bool _IsRunning;
@@ -62,11 +62,26 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             handlingObj = 1;
+            // mudar a cor do HUd selecionado
+            hudController.SelectItem(0);
         }
-        
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             handlingObj = 2;
+            // mudar a cor do HUd selecionado
+            hudController.SelectItem(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            handlingObj = 3;
+            // mudar a cor do HUd selecionado
+            hudController.SelectItem(2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            handlingObj = 4;
+            // mudar a cor do HUd selecionado
+            hudController.SelectItem(3);
         }
 
         OnInput();
@@ -153,6 +168,7 @@ public class Player : MonoBehaviour
             // para atualizar a interface do usuário (HUD) e indicar que o jogador não está correndo
             hudController.SetPlayerRunning(false);
         }
+
         // Verifica se o jogador pressionou a tecla "Shift Esquerdo" e se tem stamina suficiente
         if (Input.GetKeyDown(KeyCode.LeftShift) && playerItems.TotalStamina > 0)
         {
