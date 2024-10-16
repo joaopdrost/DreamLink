@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ef1dbf26d33df45bba74f0adf04c91, type: 3}
+  m_Name: NPC_1
+  m_EditorClassIdentifier: 
+  actor: {fileID: 169541957715064502, guid: f5e6585dc3b9076408e448525d248d3d, type: 3}
+  speakeSprite: {fileID: 0}
+  sentence: 
+  dialogues:
+  - actorName: marina
+    profile: {fileID: 1540075361, guid: 15389407520082f4bb64fa5576833827, type: 3}
+    setence:
+      portugese: "Ol\xE1 ALEX como voce e sua familia esta "
+      english: wlcome
+      spanish: bon dia
+  - actorName: dfdsfds
+    profile: {fileID: -165028616189249673, guid: 498d6c33c89360e43b56b0934609c613, type: 3}
+    setence:
+      portugese: ajklsndjkaslndkljaskldsajikd
+      english: 
+      spanish: 
+  - actorName: adwweweq
+    profile: {fileID: 0}
+    setence:
+      portugese: heleosjkf
+      english: 
+      spanish: 
