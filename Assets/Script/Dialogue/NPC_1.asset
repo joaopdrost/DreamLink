@@ -16,10 +16,10 @@ MonoBehaviour:
   speakeSprite: {fileID: 0}
   sentence: 
   dialogues:
-  - actorName: marina
+  - actorName: Diana
     profile: {fileID: 1540075361, guid: 15389407520082f4bb64fa5576833827, type: 3}
     setence:
-      portugese: "Ol\xE1 ALEX como voce e sua familia esta "
+      portugese: "Ol\xE1 ALEX como voce e sua familia esta ?"
       english: wlcome
       spanish: bon dia
   - actorName: dfdsfds

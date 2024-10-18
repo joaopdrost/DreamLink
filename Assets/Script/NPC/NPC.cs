@@ -23,12 +23,12 @@ public class NPC : MonoBehaviour
         if (DialogueControl.instance.isShowing)
         {
             speed = 0f;
-            anim.SetBool("isWalking", false);
+            
         }
         else
         {
             speed = initialSpeed;
-            anim.SetBool("isWalking", true);
+           
         }
 
         
