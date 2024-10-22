@@ -3,10 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEngine;
+using UnityEngine
+    using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [Header("Status")]
+    public float totalHealth;
+    public float currentHealth;
+    public Image healthBar; 
+    public bool isDead;
+
+
+
     [SerializeField]private float speed;
     [SerializeField]private float runSpeed;
     private Rigidbody2D rig;
