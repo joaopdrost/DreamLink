@@ -27,18 +27,20 @@ public class PlayerAnim : MonoBehaviour
 
     void Update()
     {
-        OnMove();
-        OnRun();
-
-        timeCount += Time.deltaTime;
-
-        // hit do slime no player 
-        if (isHitting)
+        if (!player.isDead) // Só executa as animações se o player não estiver morto
         {
-            if (timeCount >= recoveryTime)
+            OnMove();
+            OnRun();
+
+            timeCount += Time.deltaTime;
+
+            if (isHitting)
             {
-                isHitting = false;
-                timeCount = 0;
+                if (timeCount >= recoveryTime)
+                {
+                    isHitting = false;
+                    timeCount = 0;
+                }
             }
         }
     }
@@ -108,14 +110,22 @@ public class PlayerAnim : MonoBehaviour
 
 
     #endregion
+    public void OnDeath()
+    {
+        anim.SetTrigger("death");
+        Destroy(player.gameObject, 1f);
+        // Você pode adicionar aqui outras ações que devem acontecer na morte
 
+    }
     public void OnHit()
     {
         if (!isHitting)
         {
             anim.SetTrigger("hit");
             isHitting = true;
+            timeCount = 0;
         }
 
     }
+    
 }

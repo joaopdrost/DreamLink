@@ -87,8 +87,8 @@ public class HUDController : MonoBehaviour
     }
     void Start()
     {
-        LifeUIBar.fillAmount = 0.25f;
-        NoLifeUIBar.fillAmount = 0.25f;
+        LifeUIBar.fillAmount = 1f;
+       
     }
 
     

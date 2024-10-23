@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class PlayerItems : MonoBehaviour
 {
-    [Header("Amouts")]
-     public float totalLife;
-     public float totalNoLife;
+    
 
     [Header("Limits")]
 
-    public float liveLimit = 0.25f;
-    public float noLivelLimit = 0.25f;
+    
     [SerializeField] private float totalStamina = 1f; // 1 representa 100% de stamina
     [SerializeField] private float staminaDrainRate = 0.5f; // quanto a stamina diminui por segundo
     [SerializeField] private float staminaRecoveryRate = 0.09f; // quanto a stamina se recupera por segundo
@@ -33,18 +30,6 @@ public class PlayerItems : MonoBehaviour
         TotalStamina += staminaRecoveryRate * Time.deltaTime;
     }
 
-    public void LiveLimit(float life)
-    {
-        if (totalLife <= liveLimit )
-        {
-            totalLife += life;
-        }
-    }
-    public void NoLivelLimit(float nolife)
-    {
-        if (totalNoLife <= noLivelLimit )
-        {
-            totalNoLife += nolife;
-        }
-    }
+    
+    
 }

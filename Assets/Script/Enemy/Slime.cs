@@ -16,7 +16,11 @@ public class Slime : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private AnimationControl animContol;
 
-    
+    [Header("Attack")]
+    [SerializeField] private float attackDistance = 1.5f; // Distância para começar o ataque
+    [SerializeField] private float attackRate = 2f; // Taxa de ataque
+    private float nextAttackTime;
+
     private Player player;
 
     void Start()
@@ -25,25 +29,31 @@ public class Slime : MonoBehaviour
         player = FindObjectOfType<Player>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        nextAttackTime = 0f;
+        UpdateHealthBar();
     }
 
     void Update()
     {
-        if (!isDead)
+        if (!isDead && player != null && !player.isDead)
         {
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-            agent.SetDestination(player.transform.position);
-
-            if (Vector2.Distance(transform.position, player.transform.position) <= agent.stoppingDistance)
+            if (distanceToPlayer <= agent.stoppingDistance)
             {
-                // chegou no limite (slime parado)
-                animContol.PlayerAnim(2);
+                // Dentro da distância de ataque
+                animContol.PlayerAnim(2); // Animação parado
+                if (Time.time >= nextAttackTime)
+                {
+                    animContol.Attack();
+                    nextAttackTime = Time.time + attackRate;
+                }
             }
-
             else
             {
-                // slime segue player
-                animContol.PlayerAnim(1);
+                // Perseguindo o player
+                agent.SetDestination(player.transform.position);
+                animContol.PlayerAnim(1); // Animação de movimento
             }
 
             float posx = player.transform.position.x - transform.position.x;
@@ -57,6 +67,52 @@ public class Slime : MonoBehaviour
             }
 
         }
-       
+
+        else if (isDead)
+        {
+            agent.SetDestination(transform.position);
+            animContol.PlayerAnim(0); // Desativa a navegação quando morto
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (!isDead)
+        {
+            currentHealth -= damage;
+            UpdateHealthBar();
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                Die();
+            }
+            else
+            {
+                animContol.OnHit(); // Animação de hit
+            }
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        agent.enabled = false;
+        
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / totalHealth;
+        }
+    }
+
+    // Para ajudar na depuração
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, agent != null ? agent.stoppingDistance : attackDistance);
     }
 }

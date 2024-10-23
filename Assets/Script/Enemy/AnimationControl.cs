@@ -5,16 +5,19 @@ using UnityEngine;
 public class AnimationControl : MonoBehaviour
 
 {
-    
+    [Header("Attack")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float radius;
     [SerializeField] private LayerMask playerLayer;
-    
-    
+    [SerializeField] private float attackDamage = 5f; // Ajuste o dano para um valor apropriado
+    [SerializeField] private float attackCooldown = 2f; // Tempo entre ataques
+
+
 
     private PlayerAnim player;
     private Animator anim;
     private Slime slime;
+    private float nextAttackTime;
 
     private void Start()
     {
@@ -23,19 +26,25 @@ public class AnimationControl : MonoBehaviour
         slime = GetComponentInParent<Slime>();
     }
 
+
     public void PlayerAnim(int value)
     {
         anim.SetInteger("transition", value);
     }
-
-   public void Attack()
+    public void Attack()
     {
-        if (!slime.isDead)
+        if (!slime.isDead && Time.time >= nextAttackTime)
         {
             Collider2D hit = Physics2D.OverlapCircle(attackPoint.position, radius, playerLayer);
             if (hit != null)
             {
-                player.OnHit();
+                Player hitPlayer = hit.GetComponent<Player>();
+                if (hitPlayer != null && !hitPlayer.isDead)
+                {
+                    hitPlayer.TakeDamage(attackDamage);
+                    nextAttackTime = Time.time + attackCooldown; // Define o próximo momento que pode atacar
+                    anim.SetInteger("transition", 0); // Trigger para animação de ataque do slime
+                }
             }
         }
 
@@ -60,6 +69,10 @@ public class AnimationControl : MonoBehaviour
     } 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(attackPoint.position, radius);
+        if (attackPoint != null)
+        {
+            
+            Gizmos.DrawWireSphere(attackPoint.position, radius);
+        }
     }
 }

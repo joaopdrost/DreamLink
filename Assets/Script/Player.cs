@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEngine
-    using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     private bool _IsRunning;
     private bool _IsAttacking;
 
+    private PlayerAnim playerAnim;
     private PlayerItems playerItems;
     private HUDController hudController;
 
@@ -59,50 +60,90 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
         playerItems = FindObjectOfType<PlayerItems>();
         hudController = FindObjectOfType<HUDController>();
+        playerAnim = GetComponent<PlayerAnim>();
+        currentHealth = totalHealth;
+        UpdateHealthUI();
+        isDead = false;
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (!isDead)
         {
-            handlingObj = 1;
-            // mudar a cor do HUd selecionado
-            hudController.SelectItem(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            handlingObj = 2;
-            // mudar a cor do HUd selecionado
-            hudController.SelectItem(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            handlingObj = 3;
-            // mudar a cor do HUd selecionado
-            hudController.SelectItem(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            handlingObj = 4;
-            // mudar a cor do HUd selecionado
-            hudController.SelectItem(3);
-        }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                handlingObj = 1;
+                hudController.SelectItem(0);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                handlingObj = 2;
+                hudController.SelectItem(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                handlingObj = 3;
+                hudController.SelectItem(2);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                handlingObj = 4;
+                hudController.SelectItem(3);
+            }
 
-        OnInput();
-        OnRun();
-        OnRolling();
-        OnAttacking();
-
+            OnInput();
+            OnRun();
+            OnRolling();
+            OnAttacking();
+        }
+        else
+        {
+            // Zera o movimento quando morto
+            _direction = Vector2.zero;
+            speed = 0f;
+        }
     }
 
     private void FixedUpdate()
     {
-        OnMove();
+        if (!isDead)
+        {
+            OnMove();
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (!isDead)
+        {
+            currentHealth -= damage;
+           
+            UpdateHealthUI();
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+                playerAnim.OnDeath();
+                // Adicione aqui lógica de morte do player se necessário
+
+            }
+            else
+            {
+                playerAnim.OnHit(); // Executa a animação de hit apenas se não morrer
+            }
+
+        }
+    }
+     private void UpdateHealthUI()
+    {
+        healthBar.fillAmount = currentHealth / totalHealth;
     }
     #region Movement
 
